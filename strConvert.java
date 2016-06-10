@@ -1,3 +1,7 @@
+/*
+http://jungol.co.kr/bbs/board.php?bo_table=pbank&wr_id=1775&sca=20
+*/
+
 import java.util.Scanner;
 
 public class strConvert {
