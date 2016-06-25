@@ -4,7 +4,7 @@ http://jungol.co.kr/bbs/board.php?bo_table=pbank&wr_id=1775&sca=20
 
 import java.util.Scanner;
 
-public class strConvert {
+public class StrConvert {
 	public static void solve(final char[][] list, char[] arr) {		
 		for(int i=0; i<arr.length; i++) {
 			for(int j=0; j<list.length; j++) {
