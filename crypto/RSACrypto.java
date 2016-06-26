@@ -8,20 +8,9 @@ public final class RSACrypto {
 	
 	private RSACrypto() { } // same with abstract class :)
 	
-	public static void setNewKeys() {
-		BigInteger prime1 = RandPrimeNum.nextPrime();
-		BigInteger prime2 = RandPrimeNum.nextPrime();
-		// Step1. get random prime number
-		
-		setPublicKey1(prime1, prime2);
-		// Step2. set publicKey1
-		
-		setPublicKey2(prime1, prime2);
-		// Step3. set publicKey2
-		
-		setPrivateKey(prime1, prime2);
-		// Step4. set privateKey
-	}
+	public static BigInteger getPrivateKey() { return privateKey; }
+	public static BigInteger getPublicKey1() { return publicKey1; }
+	public static BigInteger getPublicKey2() { return publicKey2; }
 	
 	private static void setPublicKey1(BigInteger p1, BigInteger p2) {
 		publicKey1 = p1.multiply(p2);
@@ -48,6 +37,20 @@ public final class RSACrypto {
 		tmp = tmp.multiply(p2.subtract(BigInteger.ONE));
 		
 		privateKey = publicKey2.modInverse(tmp);
+	}
+	public static void setNewKeys() {
+		BigInteger prime1 = RandPrimeNum.nextPrime();
+		BigInteger prime2 = RandPrimeNum.nextPrime();
+		// Step1. get random prime number
+		
+		setPublicKey1(prime1, prime2);
+		// Step2. set publicKey1
+		
+		setPublicKey2(prime1, prime2);
+		// Step3. set publicKey2
+		
+		setPrivateKey(prime1, prime2);
+		// Step4. set privateKey
 	}
 	
 	public static void showAllKeys() {
@@ -85,7 +88,11 @@ public final class RSACrypto {
 		
 		return arr;
 	}
+	
 	public static char decrypt(BigInteger b) {
+		return decrypt(b, privateKey, publicKey1);
+	}
+	public static char decrypt(BigInteger b, BigInteger privateKey, BigInteger publicKey1) {
 		BigInteger y = b.mod(publicKey1);
 		BigInteger m=BigInteger.ZERO, r=BigInteger.ONE;
 		
@@ -103,12 +110,29 @@ public final class RSACrypto {
 		return (char)r.intValue();
 	}
 	public static String decrypt(BigInteger[] code) {
+		return decrypt(code, privateKey, publicKey1);
+	}	
+	public static String decrypt(BigInteger[] code, BigInteger privateKey, BigInteger publicKey1) {
 		char[] arr = new char[code.length];
 		
 		for(int i=0; i<arr.length; i++) {
-			arr[i] = decrypt(code[i]);
+			arr[i] = decrypt(code[i], privateKey, publicKey1);
 		}
 		
 		return new String(arr);
 	}	
 }
+
+/*
+	<Tested Code>
+Scanner sc = new Scanner(System.in);
+
+System.out.print("암호화할 문자열 : ");
+String str = sc.nextLine();
+
+BigInteger[] encrypted = RSACrypto.encrypt(str);
+str = null;
+
+String decrypted = RSACrypto.decrypt(encrypted);
+System.out.println("복호화된 문자열 : " + decrypted);
+*/
